@@ -26,7 +26,7 @@ export const RootQueryType = new GraphQLObjectType({
       },
       resolve: (
         _: string,
-        { id, firstName, lastName, jobTitle, departmentId }
+        { id, firstName, lastName, jobTitle }
       ) =>
         data.people.find((people: { id: string }) => people.id === id) ||
         data.people.find(
