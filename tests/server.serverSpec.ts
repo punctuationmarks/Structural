@@ -1,11 +1,12 @@
 // TODO:
 // ADD TESTS FOR UPDATING A PERSON
 // MAYBE ADD A FRONT END?
+// clean up the scrips and the folder structure
 import { GraphQLList, GraphQLString, GraphQLNonNull } from "graphql";
 import * as chai from "chai";
 
-import { DepartmentType, PeopleType } from "./Schema";
-import { RootQueryType } from "./Resolver";
+import { DepartmentType, PeopleType } from "../Schema";
+import { RootQueryType } from "../Resolver";
 
 const expect = chai.expect;
 const should = chai.should();

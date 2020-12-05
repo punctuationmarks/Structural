@@ -1,9 +1,12 @@
 "use strict";
 exports.__esModule = true;
+// TODO:
+// ADD TESTS FOR UPDATING A PERSON
+// MAYBE ADD A FRONT END?
 var graphql_1 = require("graphql");
 var chai = require("chai");
-var Schema_1 = require("./Schema");
-var Resolver_1 = require("./Resolver");
+var Schema_1 = require("../Schema");
+var Resolver_1 = require("../Resolver");
 var expect = chai.expect;
 var should = chai.should();
 describe("DepartmentType", function () {

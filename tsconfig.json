@@ -1,7 +1,7 @@
 {
-    "compilerOptions": {
-        "target": "es3",
-        "watch": true,
-        "types": ["node", "mocha"]
-    }
+  "compilerOptions": {
+    "target": "es3",
+    "watch": true,
+    "types": ["node", "mocha", "chai"]
+  }
 }

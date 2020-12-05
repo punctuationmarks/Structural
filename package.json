@@ -6,8 +6,8 @@
   "scripts": {
     "start": "nodemon server.js",
     "tsc": "tsc *.ts --resolveJsonModule",
-    "test": "mocha *.serverSpec.js",
-    "tsc-test": "tsc *.ts --resolveJsonModule && mocha *.serverSpec.js"
+    "test": "mocha tests/*.serverSpec.js",
+    "tsc-test": "tsc *.ts --resolveJsonModule && tsc tests/*.ts --resolveJsonModule && mocha tests/*.serverSpec.js"
   },
   "dependencies": {
     "express": "^4.17.1",
