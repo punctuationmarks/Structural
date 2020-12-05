@@ -5,7 +5,7 @@ var _a = require("graphql"), GraphQLObjectType = _a.GraphQLObjectType, GraphQLSt
 var data = require("./UserData.json");
 exports.DepartmentType = new GraphQLObjectType({
     name: "Department",
-    description: "This represents a group of people working in a similar vain towards a similar goal to earn currency \n(there are also other philosophical reasons to work, but this might be a number just shy of inifinity)",
+    description: "This represents a group of people working in a similar vain towards a similar goal",
     fields: function () { return ({
         id: { type: GraphQLNonNull(GraphQLString) },
         name: { type: GraphQLNonNull(GraphQLString) },
@@ -21,7 +21,7 @@ exports.DepartmentType = new GraphQLObjectType({
 });
 exports.PeopleType = new GraphQLObjectType({
     name: "People",
-    description: "This represents a people group who toil away in a deparment",
+    description: "This represents a person or people who toil away in a deparment",
     fields: function () { return ({
         id: { type: GraphQLNonNull(GraphQLString) },
         firstName: { type: GraphQLNonNull(GraphQLString) },

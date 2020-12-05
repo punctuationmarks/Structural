@@ -14,6 +14,11 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
+"@types/chai@^4.2.14":
+  version "4.2.14"
+  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.2.14.tgz#44d2dd0b5de6185089375d976b4ec5caf6861193"
+  integrity sha512-G+ITQPXkwTrslfG5L/BksmbLUA0M1iybEsmCWPqzSxsRRhJZimBKJkoMi8fr/CPygPTj4zO5pJH7I2/cm9M7SQ==
+
 "@types/mocha@^8.0.4":
   version "8.0.4"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-8.0.4.tgz#b840c2dce46bacf286e237bfb59a29e843399148"
@@ -330,6 +335,13 @@ camelcase@^6.0.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-6.2.0.tgz#924af881c9d525ac9d87f40d964e5cea982a1809"
   integrity sha512-c7wVvbw3f37nuobQNtgsgG9POC9qMbNuMQmTCqZv23b6MIz0fcYpBiOlv9gEN/hdLdnZTDQhg6e9Dq5M1vKvfg==
+
+chai-graphql@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/chai-graphql/-/chai-graphql-4.0.0.tgz#dd6ca2ece127d781f2f990cdefae53bf6060c12a"
+  integrity sha512-CvgtShjnUEsW3lVNiCSwjXOycYRurvyBPqfIQL9PRmqJF3KvmCJId13RQb0h0EZKwjGCws+Pgbduqn3lT33vlg==
+  dependencies:
+    check-error "^1.0.2"
 
 chai@^4.2.0:
   version "4.2.0"

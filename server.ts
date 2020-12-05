@@ -1,4 +1,3 @@
-// const express = require("express");
 import * as express from "express";
 import { graphqlHTTP } from "express-graphql";
 const { GraphQLSchema } = require("graphql");
@@ -19,6 +18,7 @@ app.use(
     graphiql: true,
   })
 );
+
 app.listen(4000, () =>
   console.log("Server Running at local host port 4000; GraphiQL is at /graphql")
 );

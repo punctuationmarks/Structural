@@ -1,6 +1,6 @@
 # Employee and Department project for Structural
 
-GraphQL with Express, written in TypeScript
+GraphQL with Express, written in TypeScript. Tests written with Chai and Mocha.
 
 ## Getting started
 
@@ -16,7 +16,7 @@ $ yarn install
 $ yarn start
 ```
 
-- Run the tests with Chai and Mocha.
+- Run the tests
 
 ```
 $ yarn test
@@ -67,6 +67,7 @@ query {
   department(name: "HR") {
     name
     id
+    # returns all people in that department
     people {
       firstName
       lastName
@@ -109,10 +110,11 @@ mutation {
 
 ## TODO:
 - Make CRUD options more robust for People and for Departments
+  - Also check with 
 - Add front end
 - Add search features
 
 
-### Caveats
+#### Caveats
 
 This was my first project working with GraphQL in any format, so my apologies for any poor naming conventions and any relational taboos. I have much more experience in straight JavaScript with NoSQL DBs like MongoDB and Firebase (when it comes to database structures outside of SQL). With that, I found GraphQL captivating and a fun way to structure data, thank you for pushing me to think of data relations in a new way. Hope this finds you well.

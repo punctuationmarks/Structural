@@ -11,6 +11,9 @@ exports.RootQueryType = new GraphQLObjectType({
         people: {
             type: Schema_1.PeopleType,
             description: "A person or people who match from an argument",
+            // TODO:
+            // check with specs to see if search through People for all people in a particular department
+            // currently user needs to query department, then people to return all people in that department
             args: {
                 id: { type: GraphQLString },
                 firstName: { type: GraphQLString },
@@ -32,7 +35,7 @@ exports.RootQueryType = new GraphQLObjectType({
         },
         department: {
             type: Schema_1.DepartmentType,
-            description: "A Single Department",
+            description: "A single Department",
             args: {
                 id: { type: GraphQLString },
                 name: { type: GraphQLString }
@@ -50,31 +53,36 @@ exports.RootQueryType = new GraphQLObjectType({
         }
     }); }
 });
+// TODO:
+// Check with specs to see if this should be allowed to take more attributes/fields
+// to be allowed to select an individual to update. Also check to see what attributes
+// should be allowed to be mutated
 exports.RootMutationType = new GraphQLObjectType({
     name: "Mutation",
-    description: "Mutation to update a person's name or job title, but only if they have the user's ID. This is to add a barrier to avoid misuse or overuse. Data does not persit once the server is destroyed",
+    description: "Mutation to update a person's name or job title, but only if they have the user's ID. This is to add a barrier to avoid misuse or overuse. Data does not persit once the server is destroyed.",
     fields: function () { return ({
         updatePerson: {
             type: Schema_1.PeopleType,
-            description: "Update a human's data",
+            description: "Update a person's data",
             args: {
                 id: { type: new GraphQLNonNull(GraphQLString) },
                 firstName: { type: GraphQLString },
                 lastName: { type: GraphQLString },
                 jobTitle: { type: GraphQLString }
             },
-            resolve: function (parent, args) {
+            resolve: function (_, _a) {
+                var id = _a.id, firstName = _a.firstName, lastName = _a.lastName, jobTitle = _a.jobTitle;
                 var updatedPerson = data.people.find(function (data) {
-                    return data.id == args.id;
+                    return data.id == id;
                 });
-                if (args.firstName) {
-                    updatedPerson.firstName = args.firstName;
+                if (firstName) {
+                    updatedPerson.firstName = firstName;
                 }
-                if (args.lastName) {
-                    updatedPerson.lastName = args.lastName;
+                if (lastName) {
+                    updatedPerson.lastName = lastName;
                 }
-                if (args.jobTitle) {
-                    updatedPerson.jobTitle = args.jobTitle;
+                if (jobTitle) {
+                    updatedPerson.jobTitle = jobTitle;
                 }
                 return updatedPerson;
             }
