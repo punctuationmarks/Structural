@@ -93,7 +93,7 @@ query {
 
 ## Updating individual person
 
-**Notes**: Mutations require the human's id, this is a required argument just to add a barrier to avoid misuse or overuse. Data does not persit once the server is destroyed.
+**Notes**: Mutations require the individual's id, this is a required argument just to add a barrier to avoid misuse or overuse. Data does not persit once the server is destroyed.
 
 - Mutation example
 
@@ -107,13 +107,6 @@ mutation {
   }
 }
 ```
-
-## TODO:
-- Make CRUD options more robust for People and for Departments
-  - Also check with 
-- Add front end
-- Add search features
-
 
 #### Caveats
 
