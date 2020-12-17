@@ -5,12 +5,14 @@ const {
   GraphQLNonNull,
 } = require("graphql");
 
+import { error } from "console";
+import { GraphQLInt } from "graphql";
 import { DepartmentType, PeopleType } from "./Schema";
 import * as data from "./UserData.json";
 
 export const RootQueryType = new GraphQLObjectType({
   name: "Query",
-  description: "Root Query",
+  description: "Main query that contains all queries",
   fields: () => ({
     people: {
       type: PeopleType,
@@ -24,10 +26,7 @@ export const RootQueryType = new GraphQLObjectType({
         lastName: { type: GraphQLString },
         jobTitle: { type: GraphQLString },
       },
-      resolve: (
-        _: string,
-        { id, firstName, lastName, jobTitle }
-      ) =>
+      resolve: (_: string, { id, firstName, lastName, jobTitle }) =>
         data.people.find((people: { id: string }) => people.id === id) ||
         data.people.find(
           (people: { firstName: string }) => people.firstName === firstName
@@ -39,10 +38,30 @@ export const RootQueryType = new GraphQLObjectType({
           (people: { jobTitle: string }) => people.jobTitle === jobTitle
         ),
     },
-    getAllPeople: {
+    batchGetPeople: {
       type: new GraphQLList(PeopleType),
-      description: "List of all People",
-      resolve: () => data.people,
+      description:
+        "List of all People if no arguments passed. Get the number of observations/records from 'first' (with the index starting at 0 and being non-inclusive of ending at argument 'first') and 'last'. If passed together, 'first' and 'last' are .slice(start, end) respectively.",
+      args: {
+        first: { type: GraphQLInt },
+        last: { type: GraphQLInt },
+      },
+      resolve: (_: string, { first, last }) => {
+        if (first && last) {
+          if (last > first || last === -1) {
+            return data.people.slice(first, last);
+          } else {
+            throw new Error("'last' must be greater than 'first', unless 'last' === -1 then just pass 'first' argument without passing 'last'");
+          }
+        }
+        if (first) {
+          return data.people.slice(0, first);
+        }
+        if (last) {
+          return data.people.slice(-last);
+        }
+        return data.people;
+      },
     },
     department: {
       type: DepartmentType,
@@ -59,10 +78,30 @@ export const RootQueryType = new GraphQLObjectType({
           (department: { name: string }) => department.name === name
         ),
     },
-    getAllDepartments: {
+    batchGetDepartments: {
       type: new GraphQLList(DepartmentType),
-      description: "List of all Departments",
-      resolve: () => data.departments,
+      description:
+        "List of all Departments. Get the number of observations/records from 'first' (with the index starting at 0 and being non-inclusive of ending at argument 'first') and 'last'. If passed together, 'first' and 'last' are .slice(start, end) respectively.",
+      args: {
+        first: { type: GraphQLInt },
+        last: { type: GraphQLInt },
+      },
+      resolve: (_: string, { first, last }) => {
+        if (first && last) {
+          if (last > first || last === -1) {
+            return data.departments.slice(first, last);
+          } else {
+            throw new Error("'last' must be greater than 'first', unless 'last' === -1 then just pass 'first' argument without passing 'last'");
+          }
+        }
+        if (first) {
+          return data.departments.slice(0, first);
+        }
+        if (last) {
+          return data.departments.slice(-last);
+        }
+        return data.departments;
+      },
     },
   }),
 });

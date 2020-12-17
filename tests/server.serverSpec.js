@@ -42,7 +42,14 @@ describe("Query departments", function () {
     });
     // Querying all departments
     it("Should return an array if query all departments", function () {
-        Resolver_1.RootQueryType.getFields().getAllDepartments.resolve().should.be.an("array");
+        Resolver_1.RootQueryType.getFields()
+            .batchGetDepartments.resolve(null, { first: undefined, last: undefined })
+            .should.be.an("array");
+    });
+    it("Should return just the first two departments", function () {
+        Resolver_1.RootQueryType.getFields()
+            .batchGetDepartments.resolve(null, { first: 2 })
+            .should.be.an("array")["with"].length(2);
     });
 });
 describe("Query people", function () {
@@ -62,8 +69,25 @@ describe("Query people", function () {
     });
     // Querying all people
     it("Should return an array if query all people", function () {
-        Resolver_1.RootQueryType.getFields().getAllPeople.resolve().should.be.an("array");
+        Resolver_1.RootQueryType.getFields()
+            .batchGetPeople.resolve(null, { first: undefined, last: undefined })
+            .should.be.an("array");
     });
+    it("Should return just the first three people", function () {
+        Resolver_1.RootQueryType.getFields()
+            .batchGetPeople.resolve(null, { first: 3 })
+            .should.be.an("array")["with"].length(3);
+    });
+    it("Should throw an error since last < first", function () {
+        expect(function () {
+            return Resolver_1.RootQueryType.getFields().batchGetPeople.resolve(null, {
+                first: 3,
+                last: 1
+            });
+        }).to["throw"]();
+    });
+    //   "'last' must be greater than 'first', unless 'last' === -1 then just pass 'first' argument without passing 'last'"
+    // );
 });
 describe("Updating a person", function () {
     it("Should return the individual updated", function () {
@@ -74,14 +98,12 @@ describe("Updating a person", function () {
         })
             .should.include({ firstName: "Billy", jobTitle: "CEO" });
     });
-    // This technically fails, but having an issue getting the test to pass stating that it failed. 
-    // Need to look deeper into the chai docs for this
-    // it("should fail if trying to update by anything besides the ID", () => {
-    //   assert.fail(
-    //     RootMutationType.getFields().updatePerson.resolve(null, {
-    //       jobTitle: "CEO",
-    //       firstName: "Billy",
-    //     })
-    //   );
-    // });
+    it("should fail if trying to update by anything besides the ID", function () {
+        expect(function () {
+            return Resolver_1.RootMutationType.getFields().updatePerson.resolve(null, {
+                jobTitle: "CEO",
+                firstName: "Billy"
+            });
+        }).to["throw"]();
+    });
 });

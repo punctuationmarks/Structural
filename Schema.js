@@ -1,6 +1,5 @@
 "use strict";
 exports.__esModule = true;
-exports.PeopleType = exports.DepartmentType = void 0;
 var _a = require("graphql"), GraphQLObjectType = _a.GraphQLObjectType, GraphQLString = _a.GraphQLString, GraphQLNonNull = _a.GraphQLNonNull, GraphQLList = _a.GraphQLList;
 var data = require("./UserData.json");
 exports.DepartmentType = new GraphQLObjectType({

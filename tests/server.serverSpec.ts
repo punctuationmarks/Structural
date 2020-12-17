@@ -55,7 +55,16 @@ describe("Query departments", () => {
   });
   // Querying all departments
   it("Should return an array if query all departments", () => {
-    RootQueryType.getFields().getAllDepartments.resolve().should.be.an("array");
+    RootQueryType.getFields()
+      .batchGetDepartments.resolve(null, { first: undefined, last: undefined })
+      .should.be.an("array");
+  });
+
+  it("Should return just the first two departments", () => {
+    RootQueryType.getFields()
+      .batchGetDepartments.resolve(null, { first: 2 })
+      .should.be.an("array")
+      .with.length(2);
   });
 });
 
@@ -78,7 +87,25 @@ describe("Query people", () => {
 
   // Querying all people
   it("Should return an array if query all people", () => {
-    RootQueryType.getFields().getAllPeople.resolve().should.be.an("array");
+    RootQueryType.getFields()
+      .batchGetPeople.resolve(null, { first: undefined, last: undefined })
+      .should.be.an("array");
+  });
+
+  it("Should return just the first three people", () => {
+    RootQueryType.getFields()
+      .batchGetPeople.resolve(null, { first: 3 })
+      .should.be.an("array")
+      .with.length(3);
+  });
+
+  it("Should throw an error since last < first", () => {
+    expect(() =>
+      RootQueryType.getFields().batchGetPeople.resolve(null, {
+        first: 3,
+        last: 1,
+      })
+    ).to.throw();
   });
 });
 
@@ -92,14 +119,12 @@ describe("Updating a person", () => {
       .should.include({ firstName: "Billy", jobTitle: "CEO" });
   });
 
-  // This technically fails, but having an issue getting the test to pass stating that it failed. 
-  // Need to look deeper into the chai docs for this
-  // it("should fail if trying to update by anything besides the ID", () => {
-  //   assert.fail(
-  //     RootMutationType.getFields().updatePerson.resolve(null, {
-  //       jobTitle: "CEO",
-  //       firstName: "Billy",
-  //     })
-  //   );
-  // });
+  it("should fail if trying to update by anything besides the ID", () => {
+    expect(() =>
+          RootMutationType.getFields().updatePerson.resolve(null, {
+        jobTitle: "CEO",
+        firstName: "Billy",
+      })
+    ).to.throw();
+  });
 });

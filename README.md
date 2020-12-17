@@ -22,6 +22,27 @@ $ yarn start
 $ yarn test
 ```
 
+## Introspection on the schema
+
+```graphql
+query {
+  __schema {
+    queryType {
+      name
+      description
+    }
+    mutationType {
+      name
+      description
+    }
+    types {
+      name
+      description
+    }
+  }
+}
+```
+
 ## Some sample queries:
 
 - Querying people
@@ -80,13 +101,26 @@ query {
 
 ```graphql
 query {
-  getAllDepartments {
+  batchGetDepartments {
     name
     id
   }
-  getAllPeople {
+  batchGetPeople {
     firstName
     lastName
+  }
+}
+
+# with optional limits
+query {
+  batchGetPeople(last: 5) {
+    lastName
+    jobTitle
+  }
+
+  batchGetDepartments(first: 5) {
+    name
+    id
   }
 }
 ```

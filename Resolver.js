@@ -1,12 +1,12 @@
 "use strict";
 exports.__esModule = true;
-exports.RootMutationType = exports.RootQueryType = void 0;
 var _a = require("graphql"), GraphQLObjectType = _a.GraphQLObjectType, GraphQLString = _a.GraphQLString, GraphQLList = _a.GraphQLList, GraphQLNonNull = _a.GraphQLNonNull;
+var graphql_1 = require("graphql");
 var Schema_1 = require("./Schema");
 var data = require("./UserData.json");
 exports.RootQueryType = new GraphQLObjectType({
     name: "Query",
-    description: "Root Query",
+    description: "Main query that contains all queries",
     fields: function () { return ({
         people: {
             type: Schema_1.PeopleType,
@@ -21,17 +21,38 @@ exports.RootQueryType = new GraphQLObjectType({
                 jobTitle: { type: GraphQLString }
             },
             resolve: function (_, _a) {
-                var id = _a.id, firstName = _a.firstName, lastName = _a.lastName, jobTitle = _a.jobTitle, departmentId = _a.departmentId;
+                var id = _a.id, firstName = _a.firstName, lastName = _a.lastName, jobTitle = _a.jobTitle;
                 return data.people.find(function (people) { return people.id === id; }) ||
                     data.people.find(function (people) { return people.firstName === firstName; }) ||
                     data.people.find(function (people) { return people.lastName === lastName; }) ||
                     data.people.find(function (people) { return people.jobTitle === jobTitle; });
             }
         },
-        getAllPeople: {
+        batchGetPeople: {
             type: new GraphQLList(Schema_1.PeopleType),
-            description: "List of all People",
-            resolve: function () { return data.people; }
+            description: "List of all People if no arguments passed. Get the number of observations/records from 'first' (with the index starting at 0 and being non-inclusive of ending at argument 'first') and 'last'. If passed together, 'first' and 'last' are .slice(start, end) respectively.",
+            args: {
+                first: { type: graphql_1.GraphQLInt },
+                last: { type: graphql_1.GraphQLInt }
+            },
+            resolve: function (_, _a) {
+                var first = _a.first, last = _a.last;
+                if (first && last) {
+                    if (last > first || last === -1) {
+                        return data.people.slice(first, last);
+                    }
+                    else {
+                        throw new Error("'last' must be greater than 'first', unless 'last' === -1 then just pass 'first' argument without passing 'last'");
+                    }
+                }
+                if (first) {
+                    return data.people.slice(0, first);
+                }
+                if (last) {
+                    return data.people.slice(-last);
+                }
+                return data.people;
+            }
         },
         department: {
             type: Schema_1.DepartmentType,
@@ -46,10 +67,31 @@ exports.RootQueryType = new GraphQLObjectType({
                     data.departments.find(function (department) { return department.name === name; });
             }
         },
-        getAllDepartments: {
+        batchGetDepartments: {
             type: new GraphQLList(Schema_1.DepartmentType),
-            description: "List of all Departments",
-            resolve: function () { return data.departments; }
+            description: "List of all Departments. Get the number of observations/records from 'first' (with the index starting at 0 and being non-inclusive of ending at argument 'first') and 'last'. If passed together, 'first' and 'last' are .slice(start, end) respectively.",
+            args: {
+                first: { type: graphql_1.GraphQLInt },
+                last: { type: graphql_1.GraphQLInt }
+            },
+            resolve: function (_, _a) {
+                var first = _a.first, last = _a.last;
+                if (first && last) {
+                    if (last > first || last === -1) {
+                        return data.departments.slice(first, last);
+                    }
+                    else {
+                        throw new Error("'last' must be greater than 'first', unless 'last' === -1 then just pass 'first' argument without passing 'last'");
+                    }
+                }
+                if (first) {
+                    return data.departments.slice(0, first);
+                }
+                if (last) {
+                    return data.departments.slice(-last);
+                }
+                return data.departments;
+            }
         }
     }); }
 });
