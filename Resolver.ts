@@ -7,10 +7,10 @@ const {
 
 import { error } from "console";
 import { GraphQLInt } from "graphql";
-import { DepartmentType, PeopleType } from "./Schema";
+import { DepartmentType, PeopleType } from "./defTypes";
 import * as data from "./UserData.json";
 
-export const RootQueryType = new GraphQLObjectType({
+export const RootQuery = new GraphQLObjectType({
   name: "Query",
   description: "Main query that contains all queries",
   fields: () => ({
@@ -51,7 +51,9 @@ export const RootQueryType = new GraphQLObjectType({
           if (last > first || last === -1) {
             return data.people.slice(first, last);
           } else {
-            throw new Error("'last' must be greater than 'first', unless 'last' === -1 then just pass 'first' argument without passing 'last'");
+            throw new Error(
+              "'last' must be greater than 'first', unless 'last' === -1 then just pass 'first' argument without passing 'last'"
+            );
           }
         }
         if (first) {
@@ -91,7 +93,9 @@ export const RootQueryType = new GraphQLObjectType({
           if (last > first || last === -1) {
             return data.departments.slice(first, last);
           } else {
-            throw new Error("'last' must be greater than 'first', unless 'last' === -1 then just pass 'first' argument without passing 'last'");
+            throw new Error(
+              "'last' must be greater than 'first', unless 'last' === -1 then just pass 'first' argument without passing 'last'"
+            );
           }
         }
         if (first) {
@@ -110,7 +114,7 @@ export const RootQueryType = new GraphQLObjectType({
 // Check with specs to see if this should be allowed to take more attributes/fields
 // to be allowed to select an individual to update. Also check to see what attributes
 // should be allowed to be mutated
-export const RootMutationType = new GraphQLObjectType({
+export const RootMutation = new GraphQLObjectType({
   name: "Mutation",
   description:
     "Mutation to update a person's name or job title, but only if they have the user's ID. This is to add a barrier to avoid misuse or overuse. Data does not persit once the server is destroyed.",

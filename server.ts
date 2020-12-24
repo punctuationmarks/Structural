@@ -2,13 +2,14 @@ import * as express from "express";
 import { graphqlHTTP } from "express-graphql";
 const { GraphQLSchema } = require("graphql");
 
-import { RootQueryType, RootMutationType } from "./Resolver";
+import { RootQuery, RootMutation } from "./Resolver";
 
 const schema = new GraphQLSchema({
-  query: RootQueryType,
-  mutation: RootMutationType,
+  query: RootQuery,
+  mutation: RootMutation,
 });
 
+const port = 5000;
 const app = express();
 
 app.use(
@@ -19,6 +20,6 @@ app.use(
   })
 );
 
-app.listen(4000, () =>
-  console.log("Server Running at local host port 4000; GraphiQL is at /graphql")
+app.listen(port, () =>
+  console.log(`Server Running at local host port ${port}; GraphiQL is at /graphql`)
 );

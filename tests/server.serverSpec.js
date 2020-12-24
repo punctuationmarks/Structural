@@ -33,21 +33,21 @@ describe("PeopleType", function () {
 describe("Query departments", function () {
     // Querying individual departments
     it("Should return an object if query by id or name", function () {
-        Resolver_1.RootQueryType.getFields()
+        Resolver_1.RootQuery.getFields()
             .department.resolve(null, { id: "ddd31c01-a30d-4e72-8e8b-d710fcc4fb56" })
             .should.be.an("object");
-        Resolver_1.RootQueryType.getFields()
+        Resolver_1.RootQuery.getFields()
             .department.resolve(null, { name: "HR" })
             .should.be.an("object");
     });
     // Querying all departments
     it("Should return an array if query all departments", function () {
-        Resolver_1.RootQueryType.getFields()
+        Resolver_1.RootQuery.getFields()
             .batchGetDepartments.resolve(null, { first: undefined, last: undefined })
             .should.be.an("array");
     });
     it("Should return just the first two departments", function () {
-        Resolver_1.RootQueryType.getFields()
+        Resolver_1.RootQuery.getFields()
             .batchGetDepartments.resolve(null, { first: 2 })
             .should.be.an("array")["with"].length(2);
     });
@@ -56,12 +56,12 @@ describe("Query people", function () {
     // Querying individual people
     // NOTE: Querying the CEO since there is a higher chance they'll still be at ECorp for longer
     it("Should return an object if query by job title", function () {
-        Resolver_1.RootQueryType.getFields()
+        Resolver_1.RootQuery.getFields()
             .people.resolve(null, { jobTitle: "CEO" })
             .should.include({ firstName: "Orval" });
     });
     it("Should return an object if query by id", function () {
-        Resolver_1.RootQueryType.getFields()
+        Resolver_1.RootQuery.getFields()
             .people.resolve(null, {
             id: "2798c35b-5b8f-4a5d-9858-0a818d48cbef"
         })
@@ -69,29 +69,27 @@ describe("Query people", function () {
     });
     // Querying all people
     it("Should return an array if query all people", function () {
-        Resolver_1.RootQueryType.getFields()
+        Resolver_1.RootQuery.getFields()
             .batchGetPeople.resolve(null, { first: undefined, last: undefined })
             .should.be.an("array");
     });
     it("Should return just the first three people", function () {
-        Resolver_1.RootQueryType.getFields()
+        Resolver_1.RootQuery.getFields()
             .batchGetPeople.resolve(null, { first: 3 })
             .should.be.an("array")["with"].length(3);
     });
     it("Should throw an error since last < first", function () {
         expect(function () {
-            return Resolver_1.RootQueryType.getFields().batchGetPeople.resolve(null, {
+            return Resolver_1.RootQuery.getFields().batchGetPeople.resolve(null, {
                 first: 3,
                 last: 1
             });
         }).to["throw"]();
     });
-    //   "'last' must be greater than 'first', unless 'last' === -1 then just pass 'first' argument without passing 'last'"
-    // );
 });
 describe("Updating a person", function () {
     it("Should return the individual updated", function () {
-        Resolver_1.RootMutationType.getFields()
+        Resolver_1.RootMutation.getFields()
             .updatePerson.resolve(null, {
             id: "2798c35b-5b8f-4a5d-9858-0a818d48cbef",
             firstName: "Billy"
@@ -100,7 +98,7 @@ describe("Updating a person", function () {
     });
     it("should fail if trying to update by anything besides the ID", function () {
         expect(function () {
-            return Resolver_1.RootMutationType.getFields().updatePerson.resolve(null, {
+            return Resolver_1.RootMutation.getFields().updatePerson.resolve(null, {
                 jobTitle: "CEO",
                 firstName: "Billy"
             });

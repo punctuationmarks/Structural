@@ -2,7 +2,7 @@ import { GraphQLList, GraphQLString, GraphQLNonNull } from "graphql";
 import * as chai from "chai";
 
 import { DepartmentType, PeopleType } from "../Schema";
-import { RootQueryType, RootMutationType } from "../Resolver";
+import { RootQuery, RootMutation } from "../Resolver";
 
 const expect = chai.expect;
 const should = chai.should();
@@ -45,23 +45,23 @@ describe("PeopleType", () => {
 describe("Query departments", () => {
   // Querying individual departments
   it("Should return an object if query by id or name", () => {
-    RootQueryType.getFields()
+    RootQuery.getFields()
       .department.resolve(null, { id: "ddd31c01-a30d-4e72-8e8b-d710fcc4fb56" })
       .should.be.an("object");
 
-    RootQueryType.getFields()
+    RootQuery.getFields()
       .department.resolve(null, { name: "HR" })
       .should.be.an("object");
   });
   // Querying all departments
   it("Should return an array if query all departments", () => {
-    RootQueryType.getFields()
+    RootQuery.getFields()
       .batchGetDepartments.resolve(null, { first: undefined, last: undefined })
       .should.be.an("array");
   });
 
   it("Should return just the first two departments", () => {
-    RootQueryType.getFields()
+    RootQuery.getFields()
       .batchGetDepartments.resolve(null, { first: 2 })
       .should.be.an("array")
       .with.length(2);
@@ -72,13 +72,13 @@ describe("Query people", () => {
   // Querying individual people
   // NOTE: Querying the CEO since there is a higher chance they'll still be at ECorp for longer
   it("Should return an object if query by job title", () => {
-    RootQueryType.getFields()
+    RootQuery.getFields()
       .people.resolve(null, { jobTitle: "CEO" })
       .should.include({ firstName: "Orval" });
   });
 
   it("Should return an object if query by id", () => {
-    RootQueryType.getFields()
+    RootQuery.getFields()
       .people.resolve(null, {
         id: "2798c35b-5b8f-4a5d-9858-0a818d48cbef",
       })
@@ -87,13 +87,13 @@ describe("Query people", () => {
 
   // Querying all people
   it("Should return an array if query all people", () => {
-    RootQueryType.getFields()
+    RootQuery.getFields()
       .batchGetPeople.resolve(null, { first: undefined, last: undefined })
       .should.be.an("array");
   });
 
   it("Should return just the first three people", () => {
-    RootQueryType.getFields()
+    RootQuery.getFields()
       .batchGetPeople.resolve(null, { first: 3 })
       .should.be.an("array")
       .with.length(3);
@@ -101,7 +101,7 @@ describe("Query people", () => {
 
   it("Should throw an error since last < first", () => {
     expect(() =>
-      RootQueryType.getFields().batchGetPeople.resolve(null, {
+      RootQuery.getFields().batchGetPeople.resolve(null, {
         first: 3,
         last: 1,
       })
@@ -111,7 +111,7 @@ describe("Query people", () => {
 
 describe("Updating a person", () => {
   it("Should return the individual updated", () => {
-    RootMutationType.getFields()
+    RootMutation.getFields()
       .updatePerson.resolve(null, {
         id: "2798c35b-5b8f-4a5d-9858-0a818d48cbef",
         firstName: "Billy",
@@ -121,7 +121,7 @@ describe("Updating a person", () => {
 
   it("should fail if trying to update by anything besides the ID", () => {
     expect(() =>
-          RootMutationType.getFields().updatePerson.resolve(null, {
+          RootMutation.getFields().updatePerson.resolve(null, {
         jobTitle: "CEO",
         firstName: "Billy",
       })

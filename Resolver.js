@@ -1,15 +1,16 @@
 "use strict";
 exports.__esModule = true;
+exports.RootMutation = exports.RootQuery = void 0;
 var _a = require("graphql"), GraphQLObjectType = _a.GraphQLObjectType, GraphQLString = _a.GraphQLString, GraphQLList = _a.GraphQLList, GraphQLNonNull = _a.GraphQLNonNull;
 var graphql_1 = require("graphql");
-var Schema_1 = require("./Schema");
+var defTypes_1 = require("./defTypes");
 var data = require("./UserData.json");
-exports.RootQueryType = new GraphQLObjectType({
+exports.RootQuery = new GraphQLObjectType({
     name: "Query",
     description: "Main query that contains all queries",
     fields: function () { return ({
         people: {
-            type: Schema_1.PeopleType,
+            type: defTypes_1.PeopleType,
             description: "A person or people who match from an argument",
             // TODO:
             // check with specs to see if search through People for all people in a particular department
@@ -29,7 +30,7 @@ exports.RootQueryType = new GraphQLObjectType({
             }
         },
         batchGetPeople: {
-            type: new GraphQLList(Schema_1.PeopleType),
+            type: new GraphQLList(defTypes_1.PeopleType),
             description: "List of all People if no arguments passed. Get the number of observations/records from 'first' (with the index starting at 0 and being non-inclusive of ending at argument 'first') and 'last'. If passed together, 'first' and 'last' are .slice(start, end) respectively.",
             args: {
                 first: { type: graphql_1.GraphQLInt },
@@ -55,7 +56,7 @@ exports.RootQueryType = new GraphQLObjectType({
             }
         },
         department: {
-            type: Schema_1.DepartmentType,
+            type: defTypes_1.DepartmentType,
             description: "A single Department",
             args: {
                 id: { type: GraphQLString },
@@ -68,7 +69,7 @@ exports.RootQueryType = new GraphQLObjectType({
             }
         },
         batchGetDepartments: {
-            type: new GraphQLList(Schema_1.DepartmentType),
+            type: new GraphQLList(defTypes_1.DepartmentType),
             description: "List of all Departments. Get the number of observations/records from 'first' (with the index starting at 0 and being non-inclusive of ending at argument 'first') and 'last'. If passed together, 'first' and 'last' are .slice(start, end) respectively.",
             args: {
                 first: { type: graphql_1.GraphQLInt },
@@ -99,12 +100,12 @@ exports.RootQueryType = new GraphQLObjectType({
 // Check with specs to see if this should be allowed to take more attributes/fields
 // to be allowed to select an individual to update. Also check to see what attributes
 // should be allowed to be mutated
-exports.RootMutationType = new GraphQLObjectType({
+exports.RootMutation = new GraphQLObjectType({
     name: "Mutation",
     description: "Mutation to update a person's name or job title, but only if they have the user's ID. This is to add a barrier to avoid misuse or overuse. Data does not persit once the server is destroyed.",
     fields: function () { return ({
         updatePerson: {
-            type: Schema_1.PeopleType,
+            type: defTypes_1.PeopleType,
             description: "Update a person's data",
             args: {
                 id: { type: new GraphQLNonNull(GraphQLString) },
